@@ -28,41 +28,60 @@ export ACI_PASSWORD="C1sco12345"
 export ACI_URL="https://198.18.133.200"
 ```
 
-Display how to use
+How to use
 ```
-Usage: aci-interface-cli.py list [OPTIONS]
+Usage: aci-interface-cli.py [OPTIONS] COMMAND [ARGS]...
 
-  Show a list of Physical Interfaces from ACI
+  ACI Interface CLI
 
 Options:
-  --table / --json  Show a list as table or json
-  --csv             Download csv file of interfaces
-  --help            Show this message and exit.
+  --help  Show this message and exit.
+
+Commands:
+  phys  Shows physical interfaces
 ```
 
-check out Physical Interface as table
+```
+Usage: aci-interface-cli.py phys [OPTIONS]
+
+  Shows physical interfaces
+
+Options:
+  --csv           Downloads as csv file
+  --descr-exists  Including only interfaces having description
+  --raw           Shows raw data as json format
+  --help          Show this message and exit.
+```
+
+Check out Physical Interface as table
 ```bash
-$ python aci-interface-cli.py list
+$ python aci-interface-cli.py list phys
 +-----+------+-----------+---------+------+-------+-------------------+
 | pod | node | interface | adminSt | mtu  | mode  | descr             |
 +-----+------+-----------+---------+------+-------+-------------------+
-| 1   | 1201 | eth1/1    | up      | 9000 | trunk | test1             |
-| 1   | 1201 | eth1/2    | up      | 9000 | trunk | test2             |
-| 1   | 1201 | eth1/3    | up      | 9000 | trunk | test3             |
-| 1   | 1201 | eth1/4    | up      | 9000 | trunk | test4             |
+| 1   | 1201 | eth1/1    | up      | 9000 | trunk | hello             |
+| 1   | 1201 | eth1/2    | up      | 9000 | trunk | world             |
+| 1   | 1201 | eth1/3    | up      | 9000 | trunk |                   |
+| 1   | 1201 | eth1/4    | up      | 9000 | trunk |                   |
 ...
++-----+------+-----------+---------+------+-------+-------------------+
 ```
 
-Or check out Physical Interface as JSON
+Check out only physical Interface which have description
 ```bash
-$ python aci-interface-cli.py list --json
-
+$ python aci-interface-cli.py list phys --descr-exists
++-----+------+-----------+---------+------+-------+-------------------+
+| pod | node | interface | adminSt | mtu  | mode  | descr             |
++-----+------+-----------+---------+------+-------+-------------------+
+| 1   | 1201 | eth1/1    | up      | 9000 | trunk | hello             |
+| 1   | 1201 | eth1/2    | up      | 9000 | trunk | world             |
++-----+------+-----------+---------+------+-------+-------------------+
 ...
 ```
 
 Download csv file for list of Physical Interface
 ```bash
-$ python aci-interface-cli.py list --csv
+$ python aci-interface-cli.py list phys --csv
 
 interface.csv file was created.
 ```
