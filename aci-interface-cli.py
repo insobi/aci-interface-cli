@@ -80,7 +80,7 @@ def aci_interface_cli(ctx):
     default=False,
     is_flag=True,
     required=False,
-    help='Show a list as table or json'
+    help='Download csv file of interfaces'
 )
 def list(obj, table, csv):
     '''Show a list of Physical Interfaces from ACI'''
