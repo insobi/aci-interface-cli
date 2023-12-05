@@ -46,8 +46,10 @@ class ACI(object):
         url = f'{self.base_url}/api/node/class/l1PhysIf.json'
         if filters:
             url += '?'
-            if filters['descr_exists']:
+            if 'descr_exists' in filters:
                 url += 'query-target-filter=ne(l1PhysIf.descr, "")'
+            if 'state' in filters:
+                url += f'''query-target-filter=eq(l1PhysIf.adminSt, "{filters['state']}")'''
         response = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
         if response.status_code == 200:
             return True, response.json()
@@ -85,16 +87,18 @@ def aci_interface_cli(ctx):
 
 @click.command()
 @click.pass_obj
+@click.option("--state", type=click.Choice(['up', 'down'], case_sensitive=False), required=False, help='Filter by adminSt of interface')
 @click.option("--csv", default=False, is_flag=True, required=False, help='Downloads as csv file')
 @click.option("--descr-exists", default=False, is_flag=True, required=False, help='Including only interfaces having description')
 @click.option("--raw", default=False, is_flag=True, required=False, help='Shows raw data as json format')
-def phys(obj, csv, descr_exists, raw):
+def phys(obj, state, csv, descr_exists, raw):
     '''Shows physical interfaces'''
     output = None
     filters = {}
     if descr_exists:
         filters['descr_exists'] = descr_exists
-
+    if state:
+        filters['state'] = state
     success, queried = obj.get_l1PhysIf(filters=filters)
 
     if not success:

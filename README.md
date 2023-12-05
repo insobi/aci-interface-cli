@@ -40,16 +40,18 @@ Commands:
   vpc   Shows vpc interfaces
 ```
 
+How to use phys command
 ```
 Usage: aci-interface-cli.py phys [OPTIONS]
 
   Shows physical interfaces
 
 Options:
-  --csv           Downloads as csv file
-  --descr-exists  Including only interfaces having description
-  --raw           Shows raw data as json format
-  --help          Show this message and exit.
+  --state [up|down]  Filter by adminSt of interface
+  --csv              Downloads as csv file
+  --descr-exists     Including only interfaces having description
+  --raw              Shows raw data as json format
+  --help             Show this message and exit.
 ```
 
 Check out Physical Interface as table
