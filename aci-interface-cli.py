@@ -87,7 +87,7 @@ def aci_interface_cli(ctx):
 
 @click.command()
 @click.pass_obj
-@click.option("--state", type=click.Choice(['up', 'down'], case_sensitive=False), required=False, help='Filter by adminSt')
+@click.option("--state", type=click.Choice(['up', 'down'], case_sensitive=False), required=False, help='Filter by adminSt of interface')
 @click.option("--csv", default=False, is_flag=True, required=False, help='Downloads as csv file')
 @click.option("--descr-exists", default=False, is_flag=True, required=False, help='Including only interfaces having description')
 @click.option("--raw", default=False, is_flag=True, required=False, help='Shows raw data as json format')
