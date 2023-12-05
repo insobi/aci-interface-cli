@@ -74,12 +74,11 @@ $ python aci-interface-cli.py list phys --descr-exists
 | 1   | 1201 | eth1/1    | up      | 9000 | trunk | hello             |
 | 1   | 1201 | eth1/2    | up      | 9000 | trunk | world             |
 +-----+------+-----------+---------+------+-------+-------------------+
-...
 ```
 
-Download csv file for list of Physical Interface
+Download a csv file for list of Physical Interface
 ```bash
 $ python aci-interface-cli.py list phys --csv
 
-interface.csv file was created.
+interface_phys.csv file was created.
 ```
