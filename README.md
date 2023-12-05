@@ -37,7 +37,7 @@ Options:
 
 Commands:
   phys  Shows physical interfaces
-  vpc   Shows physical interfaces
+  vpc   Shows vpc interfaces
 ```
 
 ```
