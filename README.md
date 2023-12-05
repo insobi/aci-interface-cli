@@ -1,5 +1,3 @@
-[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/insobi/ndfc-template-cli)
-
 # ACI Interface CLI
 A Command Line Interface designed for retrieving interfaces from Cisco ACI
 
