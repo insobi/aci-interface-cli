@@ -56,7 +56,7 @@ Options:
 
 Check out Physical Interface as table
 ```bash
-$ python aci-interface-cli.py list phys
+$ python aci-interface-cli.py phys
 +-----+------+-----------+---------+------+-------+-------------------+
 | pod | node | interface | adminSt | mtu  | mode  | descr             |
 +-----+------+-----------+---------+------+-------+-------------------+
@@ -70,7 +70,7 @@ $ python aci-interface-cli.py list phys
 
 Check out only physical Interface which have description
 ```bash
-$ python aci-interface-cli.py list phys --descr-exists
+$ python aci-interface-cli.py phys --descr-exists
 +-----+------+-----------+---------+------+-------+-------------------+
 | pod | node | interface | adminSt | mtu  | mode  | descr             |
 +-----+------+-----------+---------+------+-------+-------------------+
@@ -81,7 +81,7 @@ $ python aci-interface-cli.py list phys --descr-exists
 
 Download a csv file for list of Physical Interface
 ```bash
-$ python aci-interface-cli.py list phys --csv
+$ python aci-interface-cli.py phys --csv
 
 interface_phys.csv file was created.
 ```
