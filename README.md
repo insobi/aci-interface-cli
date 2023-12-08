@@ -1,4 +1,7 @@
 # ACI Interface CLI
+
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/insobi/aci-interface-cli)
+
 A Command Line Interface designed for retrieving interfaces from Cisco ACI
 
 ## Installation
