@@ -88,3 +88,57 @@ $ python aci-interface-cli.py phys --csv
 
 interface_phys.csv file was created.
 ```
+
+Check out interface list filtered by json query with --raw option and jq
+```
+$ python aci-interface-cli.py phys --raw | jq '.imdata[].l1PhysIf.attributes | select(.mode|contains("trunk"))'
+{
+  "adminSt": "up",
+  "autoNeg": "on",
+  "breakT": "nonbroken",
+  "bw": "0",
+  "childAction": "",
+  "delay": "1",
+  "descr": "",
+  "dfeDelayMs": "0",
+  "dn": "topology/pod-2/node-2201/sys/phys-[eth1/32]",
+  "dot1qEtherType": "0x8100",
+  "emiRetrain": "disable",
+  "enablePoap": "no",
+  "ethpmCfgFailedBmp": "",
+  "ethpmCfgFailedTs": "00:00:00:00.000",
+  "ethpmCfgState": "0",
+  "fcotChannelNumber": "Channel32",
+  "fecMode": "inherit",
+  "id": "eth1/32",
+  "inhBw": "unspecified",
+  "isReflectiveRelayCfgSupported": "Supported",
+  "layer": "Layer2",
+  "lcOwn": "local",
+  "linkDebounce": "100",
+  "linkFlapErrorMax": "30",
+  "linkFlapErrorSeconds": "420",
+  "linkLog": "default",
+  "mdix": "auto",
+  "medium": "broadcast",
+  "modTs": "2023-10-21T19:56:51.655+00:00",
+  "mode": "trunk",
+  "monPolDn": "uni/infra/moninfra-default",
+  "mtu": "9000",
+  "name": "",
+  "pathSDescr": "",
+  "portPhyMediaType": "auto",
+  "portT": "leaf",
+  "prioFlowCtrl": "auto",
+  "reflectiveRelayEn": "off",
+  "routerMac": "not-applicable",
+  "snmpTrapSt": "enable",
+  "spanMode": "not-a-span-dest",
+  "speed": "inherit",
+  "status": "",
+  "switchingSt": "disabled",
+  "trunkLog": "default",
+  "usage": "discovery"
+},
+...
+```
