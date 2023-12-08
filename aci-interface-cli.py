@@ -46,10 +46,13 @@ class ACI(object):
         url = f'{self.base_url}/api/node/class/l1PhysIf.json'
         if filters:
             url += '?'
+            filter_join = False
             if 'descr_exists' in filters:
-                url += 'query-target-filter=ne(l1PhysIf.descr, "")'
+                url += f'''{ "&" if filter_join else "" }query-target-filter=ne(l1PhysIf.descr, "")'''
+                filter_join = True
             if 'state' in filters:
-                url += f'''query-target-filter=eq(l1PhysIf.adminSt, "{filters['state']}")'''
+                url += f'''{ "&" if filter_join else "" }query-target-filter=eq(l1PhysIf.adminSt, "{filters['state']}")'''
+                filter_join = True
         response = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
         if response.status_code == 200:
             return True, response.json()
