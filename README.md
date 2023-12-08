@@ -89,6 +89,9 @@ $ python aci-interface-cli.py phys --csv
 interface_phys.csv file was created.
 ```
 
+![interface_phys.csv](./img/csv.png)
+
+
 Check out interface list filtered by json query with --raw option and jq
 ```
 $ python aci-interface-cli.py phys --raw | jq '.imdata[].l1PhysIf.attributes | select(.mode|contains("trunk"))'
