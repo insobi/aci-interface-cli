@@ -109,8 +109,7 @@ def phys(obj, state, csv, descr_exists, raw):
         exit(1)        
 
     if csv:
-        template = Template(source='''
-sep=^
+        template = Template(source='''sep=^
 pod^node^interface^adminSt^mtu^mode^descr
 {% for item in interfaces['imdata'] %}
 {%- set l1PhysIf = item["l1PhysIf"]["attributes"] -%}
