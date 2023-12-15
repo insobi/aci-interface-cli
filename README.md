@@ -39,8 +39,9 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  phys  Shows physical interfaces
-  vpc   Shows vpc interfaces
+  phys         Shows physical interfaces
+  phys-operst  Shows operational status of physical interfaces
+  vpc          Shows physical interfaces
 ```
 
 How to use phys command
@@ -80,6 +81,17 @@ $ python aci-interface-cli.py phys --descr-exists
 | 1   | 1201 | eth1/1    | up      | 9000 | trunk | hello             |
 | 1   | 1201 | eth1/2    | up      | 9000 | trunk | world             |
 +-----+------+-----------+---------+------+-------+-------------------+
+```
+
+Check out physical Interfaces which are operational down
+```bash
+$ python aci-interface-cli.py phys-operst --state down
++-----+------+-----------+--------+------------+
+| pod | node | interface | operSt | operStQual |
++-----+------+-----------+--------+------------+
+| 1   | 101  | eth1/8    | down   | admin-down |
+| 1   | 101  | eth1/9    | down   | admin-down |
++-----+------+-----------+--------+------------+
 ```
 
 Download a csv file for list of Physical Interface

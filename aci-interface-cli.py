@@ -64,6 +64,27 @@ class ACI(object):
             page += 1
         return True, {"imdata": l1PhysIf}
 
+    def get_ethpmPhysIf(self, page_size=100, filters={}) -> (bool, dict):
+        '''call rest api for get physical interfaces status'''
+        ethpmPhysIf = []
+        page = 0
+        while True:
+            url = f'{self.base_url}/api/node/class/ethpmPhysIf.json?page-size={page_size}&page={page}'
+            if filters:
+                filter_items = []
+                if 'state' in filters:
+                    filter_items.append(f'eq(ethpmPhysIf.operSt,"{filters["state"]}")')
+                url += f'&query-target-filter=and({",".join(filter_items)})'
+            res = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
+            try:
+                res.json()['imdata'][0]
+                for item in res.json()['imdata']:
+                    ethpmPhysIf.append(item)
+            except:
+                break
+            page += 1
+        return True, {"imdata": ethpmPhysIf}
+
     def get_vpcIf(self, filters) -> (bool, str):
         '''call rest api for get VPC interfaces'''
         url = f'{self.base_url}/api/node/class/vpcIf.json?page=0'
@@ -143,6 +164,38 @@ pod^node^interface^adminSt^mtu^mode^descr
             output.add_row(row)
         click.echo(output)
 
+@click.command()
+@click.pass_obj
+@click.option("--state", type=click.Choice(['up', 'down'], case_sensitive=False), required=False, help='Filter by operst of interface')
+@click.option("--raw", default=False, is_flag=True, required=False, help='Shows raw data as json format')
+def phys_operst(obj, state, raw):
+    '''Shows operational status of physical interfaces'''
+    output = None
+    filters = {}
+    if state:
+        filters['state'] = state
+    success, queried = obj.get_ethpmPhysIf(filters=filters)
+    if not success:
+        click.secho("Execute failed.", fg="red")
+        exit(1)        
+    if raw:
+        click.echo(json.dumps(queried))
+    else:
+        output = PrettyTable()
+        output.field_names = ["pod", "node", "interface", "operSt" ,"operStQual"]
+        output.align = "l"
+        for item in queried['imdata']:
+            intf = item["ethpmPhysIf"]["attributes"]
+            row = [
+                intf["dn"].split('/')[1].split('-')[1],     # pod
+                intf["dn"].split('/')[2].split('-')[1],     # node
+                intf["dn"].split('-')[3][1:-6],             # interface
+                intf["operSt"],
+                intf["operStQual"]
+            ]
+            output.add_row(row)
+        click.echo(output)
+
 
 @click.command()
 @click.pass_obj
@@ -197,6 +250,7 @@ pod^node^domain^interface^localOperSt^remoteOperSt^descr
 
 
 aci_interface_cli.add_command(phys)
+aci_interface_cli.add_command(phys_operst)
 aci_interface_cli.add_command(vpc)
 
 
