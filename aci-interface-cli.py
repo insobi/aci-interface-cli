@@ -41,31 +41,35 @@ class ACI(object):
         else:
             return False
 
-    def get_l1PhysIf(self, filters) -> (bool, str):
+    def get_l1PhysIf(self, page_size=100, filters={}) -> (bool, dict):
         '''call rest api for get physical interfaces'''
-        url = f'{self.base_url}/api/node/class/l1PhysIf.json'
-        if filters:
-            url += '?'
-            filter_join = False
-            if 'descr_exists' in filters:
-                url += f'''{ "&" if filter_join else "" }query-target-filter=ne(l1PhysIf.descr, "")'''
-                filter_join = True
-            if 'state' in filters:
-                url += f'''{ "&" if filter_join else "" }query-target-filter=eq(l1PhysIf.adminSt, "{filters['state']}")'''
-                filter_join = True
-        response = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
-        if response.status_code == 200:
-            return True, response.json()
-        else:
-            return False, 'Failed to Execute.'
+        l1PhysIf = []
+        page = 0
+        while True:
+            url = f'{self.base_url}/api/node/class/l1PhysIf.json?page-size={page_size}&page={page}'
+            if filters:
+                filter_items = []
+                if 'descr_exists' in filters:
+                    filter_items.append('ne(l1PhysIf.descr,"")')
+                if 'state' in filters:
+                    filter_items.append(f'eq(l1PhysIf.adminSt,"{filters["state"]}")')
+                url += f'&query-target-filter=and({",".join(filter_items)})'
+            res = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
+            try:
+                res.json()['imdata'][0]
+                for item in res.json()['imdata']:
+                    l1PhysIf.append(item)
+            except:
+                break
+            page += 1
+        return True, {"imdata": l1PhysIf}
 
     def get_vpcIf(self, filters) -> (bool, str):
         '''call rest api for get VPC interfaces'''
-        url = f'{self.base_url}/api/node/class/vpcIf.json'
+        url = f'{self.base_url}/api/node/class/vpcIf.json?page=0'
         if filters:
-            url += '?'
             if filters['descr_exists']:
-                url += 'query-target-filter=ne(vpcIf.descr, "")'
+                url += '&query-target-filter=ne(vpcIf.descr,"")'
         response = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
         if response.status_code == 200:
             return True, response.json()
@@ -120,8 +124,7 @@ pod^node^interface^adminSt^mtu^mode^descr
             f.write(rendered)
             print('interface_phys.csv file was created.')
     elif raw:
-        output = json.dumps(queried)
-        click.echo(output)
+        click.echo(json.dumps(queried))
     else:
         output = PrettyTable()
         output.field_names = ["pod", "node", "interface", "adminSt" ,"mtu", "mode", "descr"]
