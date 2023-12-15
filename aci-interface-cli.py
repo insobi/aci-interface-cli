@@ -43,16 +43,12 @@ class ACI(object):
 
     def get_l1PhysIf(self, filters) -> (bool, str):
         '''call rest api for get physical interfaces'''
-        url = f'{self.base_url}/api/node/class/l1PhysIf.json'
+        url = f'{self.base_url}/api/node/class/l1PhysIf.json?page=0'
         if filters:
-            url += '?'
-            filter_join = False
             if 'descr_exists' in filters:
-                url += f'''{ "&" if filter_join else "" }query-target-filter=ne(l1PhysIf.descr, "")'''
-                filter_join = True
+                url += f'&query-target-filter=ne(l1PhysIf.descr, "")'
             if 'state' in filters:
-                url += f'''{ "&" if filter_join else "" }query-target-filter=eq(l1PhysIf.adminSt, "{filters['state']}")'''
-                filter_join = True
+                url += f'&query-target-filter=eq(l1PhysIf.adminSt, "{filters["state"]}")'
         response = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
         if response.status_code == 200:
             return True, response.json()
@@ -61,11 +57,10 @@ class ACI(object):
 
     def get_vpcIf(self, filters) -> (bool, str):
         '''call rest api for get VPC interfaces'''
-        url = f'{self.base_url}/api/node/class/vpcIf.json'
+        url = f'{self.base_url}/api/node/class/vpcIf.json?page=0'
         if filters:
-            url += '?'
             if filters['descr_exists']:
-                url += 'query-target-filter=ne(vpcIf.descr, "")'
+                url += '&query-target-filter=ne(vpcIf.descr,"")'
         response = requests.request("GET", url=url, headers=self.headers, verify=self.ssl_verify)
         if response.status_code == 200:
             return True, response.json()
